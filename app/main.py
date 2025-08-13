@@ -6,8 +6,3 @@ app = FastAPI(title="Zebrands")
 app.include_router(admin.router, prefix="/admin")
 app.include_router(product.router, prefix="/product")
 
-@app.get('/')
-def root():
-    return {"message":"hello"}
-
-
