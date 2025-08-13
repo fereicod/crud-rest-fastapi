@@ -68,3 +68,5 @@ Future improvements can include:
 - [Uvicorn Docker Deployment](https://www.uvicorn.org/deployment/docker/)
 - [FastAPI Security: OAuth2 JWT with Bearer Tokens](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/?h=bearer#hash-and-verify-the-passwords)
 
+## MYSQL
+You can use the next file **init_catalog.sql**
