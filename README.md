@@ -31,8 +31,8 @@ To run the project using Docker:
 
 1. Clone the repository:
 ```bash
-git clone <repo-url>
-cd <project-directory>
+git clone https://github.com/fereicod/backend-tech-zebrands.git
+cd backend-tech-zebrands
 ```
 
 2. Build and start the containers:
