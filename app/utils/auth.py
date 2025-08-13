@@ -6,10 +6,10 @@ SECRET_KEY = settings.JWT_SECRET
 ALGORITHM = settings.JWT_ALGORITHM
 EXPIRE_MINUTES = settings.JWT_EXPIRE_MINUTES
 
-def expirate_token(expiration_time: str):
+def expirate_token(expiration_time: str) -> datetime:
     return datetime.now(timezone.utc) + timedelta(minutes=int(expiration_time))
 
-def create_access_token(data: dict):
+def create_access_token(data: dict) -> str:
     to_encode = data.copy()
     to_encode.update({"exp": expirate_token(EXPIRE_MINUTES)})
     return encode(payload=to_encode, key=SECRET_KEY, algorithm=ALGORITHM)
