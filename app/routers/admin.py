@@ -21,9 +21,10 @@ def authenticate_user(password: str, passwod_plain: str) -> bool:
 # ToDo: Move to /utils/auth
 from datetime import datetime, timedelta, timezone 
 from jwt import encode
-SECRET_KEY="9a77ec50c040a602dc7a6db7895d1bdc83912dd312d70967ffac8d67f4fe620568d94a4d603afc2587463efd7bb68b109b84e84ceac013a10a1ffced15bdca1d"
-ALGORITHM="HS256"
-EXPIRE_MINUTES="60"
+from app.core.config import settings
+SECRET_KEY = settings.JWT_SECRET
+ALGORITHM = settings.JWT_ALGORITHM
+EXPIRE_MINUTES = settings.JWT_EXPIRE_MINUTES
 def expirate_token(expiration_time: str):
     return datetime.now(timezone.utc) + timedelta(minutes=int(expiration_time))
 def create_access_token(data: dict):
