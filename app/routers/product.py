@@ -1,7 +1,8 @@
+from collections import defaultdict
 from typing import Union
 from fastapi import APIRouter, HTTPException, Depends
 from app.schemas.api_product import Product, ProductCreate, ProductUpdate
-from app.middleware.auth_middleware import verify_token
+from app.middleware.auth_middleware import verify_token, verify_token_optional
 
 router = APIRouter()
 
@@ -18,15 +19,22 @@ products: list[dict[str, Union[int, float, str]]] = [
     {"id":10, "sku": "10010-J", "name": "Bluetooth Speaker", "price": 59.99, "brand": "SoundWave"}
 ]
 
+product_query_count: dict[str, int] = defaultdict(int)
+
+@router.get("/statistics")
+def get_product_statistics(_=Depends(verify_token)):
+    return dict(product_query_count)
 
 @router.get("/all", response_model=list[Product])
 def list_products():
     return products
 
 @router.get("/{sku}", response_model=Product)
-def get_product(sku: str):
+def get_product(sku: str, token=Depends(verify_token_optional)):
     for p in products:
         if p["sku"] == sku:
+            if not token:
+                product_query_count[sku] += 1
             return p
     raise HTTPException(status_code=404, detail="Product not found")
 

@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jwt import decode, InvalidTokenError
@@ -6,7 +7,7 @@ from app.core.config import settings
 SECRET_KEY = settings.JWT_SECRET
 ALGORITHM = settings.JWT_ALGORITHM
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
     token = credentials.credentials
@@ -15,3 +16,15 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
         return payload
     except InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid Token")
+
+def verify_token_optional(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+) -> Optional[dict]:
+    if credentials is None:
+        return None
+    token = credentials.credentials
+    try:
+        payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except InvalidTokenError:
+        return None
