@@ -1,6 +1,9 @@
-def main():
-    print("Hello from backend-tech-zebrands!")
+from fastapi import FastAPI
+
+app = FastAPI(title="Zebrands")
+
+@app.get('/')
+def root():
+    return {"message":"hello"}
 
 
-if __name__ == "__main__":
-    main()
