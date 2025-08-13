@@ -1,8 +1,9 @@
 from collections import defaultdict
 from typing import Union
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from app.schemas.api_product import Product, ProductCreate, ProductUpdate
 from app.middleware.auth_middleware import verify_token, verify_token_optional
+from app.utils.notifier import notify_admins
 
 router = APIRouter()
 
@@ -51,10 +52,12 @@ def create_product(product: ProductCreate, _=Depends(verify_token)):
     return new_product
 
 @router.put("/{sku}", response_model=Product)
-def update_product(sku: str, product: ProductUpdate, _=Depends(verify_token)):
+def update_product(sku: str, product: ProductUpdate, background_tasks: BackgroundTasks, user=Depends(verify_token)):
+    user = user["sub"]
     for idx, p in enumerate(products):
         if p["sku"] == sku:
             products[idx].update(product.dict())
+            notify_admins(products[idx], user, background_tasks)
             return products[idx]
     raise HTTPException(status_code=404, detail="Product not found")
 
