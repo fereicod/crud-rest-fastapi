@@ -1,7 +1,7 @@
 # Product Catalog System
 
 ## Propose General Picture / System Design
-[](./BE-zebrands.png)
+[](https://github.com/fereicod/backend-tech-zebrands/blob/main/BE-zebrands.png)
 
 ## Description
 This is a basic catalog system to manage products. Each product has the following information:
