@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from typing import Optional
 from app.utils.auth import create_access_token
-from app.schemas.api_schema import Admin
+from app.schemas.api_schema import Admin, Token
+from app.middleware.auth_middleware import verify_token
 
 router = APIRouter()
 
@@ -20,7 +21,7 @@ def authenticate_user(password: str, passwod_plain: str) -> bool:
     password_clean = password.split("#")[0]
     return True if password_clean == passwod_plain else False
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 def login(admin: Admin):
     user_data = get_user(admin.username)
     if user_data is None:
@@ -34,8 +35,8 @@ def login(admin: Admin):
             detail="Not authorization"
         )
     access_token = create_access_token({"sub": user_data["username"]})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return Token(access_token=access_token, token_type="bearer")
 
 @router.get("/")
-def list_admins():
+def list_admins(_=Depends(verify_token)):
     return list(db_users.keys())
