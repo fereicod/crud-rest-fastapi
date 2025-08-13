@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import Optional
 from app.utils.auth import create_access_token
-from app.schemas.api_schema import AdminLogin, Admin, Token
+from app.schemas.api_admin import Token, AdminLogin, Admin, AdminCreate, AdminUpdate
 from app.middleware.auth_middleware import verify_token
 
 router = APIRouter()
 
 # ToDo: Move to /database/handler
-db_users = {
+db_users: dict[str, dict] = {
     "fer": {
         "id": 1,
         "username": "fer",
@@ -70,9 +70,31 @@ def login(admin: AdminLogin):
     access_token = create_access_token({"sub": user_data["username"]})
     return Token(access_token=access_token, token_type="bearer")
 
-@router.get("/", response_model=list[Admin])
+@router.get("/all", response_model=list[Admin])
 def list_admins(_=Depends(verify_token)):
     return [
         {k: v for k, v in user.items() if k != "password"}
         for user in db_users.values()
     ]
+
+@router.post("/", response_model=Admin)
+def create_admin(admin: AdminCreate, _=Depends(verify_token)):
+    if admin.username in db_users:
+        raise HTTPException(status_code=400, detail="Admin already exists")
+    new_id = max([int(u["id"]) for u in db_users.values()], default=0) + 1
+    db_users[admin.username] = {**admin.dict(), "id": new_id}
+    return db_users[admin.username]
+
+@router.put("/{username}", response_model=Admin)
+def update_admin(username: str, admin: AdminUpdate, _=Depends(verify_token)):
+    if username not in db_users:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    db_users[username].update(admin.dict())
+    return db_users[username]
+
+@router.delete("/{username}")
+def delete_admin(username: str, _=Depends(verify_token)):
+    if username not in db_users:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    del db_users[username]
+    return {"detail": "Admin deleted"}
