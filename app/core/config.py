@@ -13,6 +13,14 @@ def validate_not_default(value: str) -> str:
 
 class Settings(BaseSettings):
 
+    DB_TYPE: str
+    MYSQL_ROOT_PASSWORD: str
+    MYSQL_HOST: str
+    MYSQL_USER: str
+    MYSQL_PASSWORD: str
+    MYSQL_DATABASE: str
+    MYSQL_PORT: int
+
     JWT_SECRET: str
     JWT_ALGORITHM: str
     JWT_EXPIRE_MINUTES: str
