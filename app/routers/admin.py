@@ -1,18 +1,51 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import Optional
 from app.utils.auth import create_access_token
-from app.schemas.api_schema import Admin, Token
+from app.schemas.api_schema import AdminLogin, Admin, Token
 from app.middleware.auth_middleware import verify_token
 
 router = APIRouter()
 
 # ToDo: Move to /database/handler
-db_users={
+db_users = {
     "fer": {
-        "username":"fer",
-        "password":"ferpass#hash"
+        "id": 1,
+        "username": "fer",
+        "email": "mferna.92@gmail.com",
+        "password": "ferpass#hash"
+    },
+    "ana": {
+        "id": 2,
+        "username": "ana",
+        "email": "ana@example.com",
+        "password": "ana123#hash"
+    },
+    "luis": {
+        "id": 3,
+        "username": "luis",
+        "email": "luis@example.com",
+        "password": "luis123#hash"
+    },
+    "maria": {
+        "id": 4,
+        "username": "maria",
+        "email": "maria@example.com",
+        "password": "maria123#hash"
+    },
+    "jose": {
+        "id": 5,
+        "username": "jose",
+        "email": "jose@example.com",
+        "password": "jose123#hash"
+    },
+    "carla": {
+        "id": 6,
+        "username": "carla",
+        "email": "carla@example.com",
+        "password": "carla123#hash"
     }
 }
+
 def get_user(username: str) -> Optional[dict]:
     if username in db_users:
         return db_users[username]
@@ -22,7 +55,7 @@ def authenticate_user(password: str, passwod_plain: str) -> bool:
     return True if password_clean == passwod_plain else False
 
 @router.post("/login", response_model=Token)
-def login(admin: Admin):
+def login(admin: AdminLogin):
     user_data = get_user(admin.username)
     if user_data is None:
         raise HTTPException(
@@ -37,6 +70,9 @@ def login(admin: Admin):
     access_token = create_access_token({"sub": user_data["username"]})
     return Token(access_token=access_token, token_type="bearer")
 
-@router.get("/")
+@router.get("/", response_model=list[Admin])
 def list_admins(_=Depends(verify_token)):
-    return list(db_users.keys())
+    return [
+        {k: v for k, v in user.items() if k != "password"}
+        for user in db_users.values()
+    ]
