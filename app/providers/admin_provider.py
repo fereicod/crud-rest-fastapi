@@ -2,7 +2,7 @@ from sqlmodel import Session, select
 from typing import Optional
 from app.database.models import Admin
 
-class AdminRepository:
+class AdminProvider:
     def __init__(self, session: Session):
         self.session = session
 

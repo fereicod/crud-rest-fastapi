@@ -1,11 +1,11 @@
 from typing import Optional
-from app.repositories.admim_repository import AdminRepository
+from app.providers.admin_provider import AdminProvider
 from app.database.models import Admin
 from fastapi import HTTPException
 
 
 class AdminService:
-    def __init__(self, admin_repo: AdminRepository):
+    def __init__(self, admin_repo: AdminProvider):
         self.admin_repo = admin_repo
 
     def get_admin_by_username(self, username: str) -> Optional[Admin]:
