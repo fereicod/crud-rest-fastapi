@@ -9,3 +9,7 @@ class AdminProvider:
     def get_by_username(self, username: str) -> Optional[Admin]:
         statement = select(Admin).where(Admin.username == username)
         return self.session.exec(statement).first()
+    
+    def get_all(self) -> list[Admin]:
+        statement = select(Admin)
+        return list(self.session.exec(statement))

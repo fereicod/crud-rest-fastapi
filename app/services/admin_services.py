@@ -13,3 +13,9 @@ class AdminService:
         if not admin:
             raise HTTPException(status_code=404, detail="Admin not found")
         return admin
+    
+    def get_all_admins(self) -> list[Admin]:
+        admins = self.admin_repo.get_all()
+        if not admins:
+            raise HTTPException(status_code=404, detail="No admins found")
+        return admins
