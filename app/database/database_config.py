@@ -1,10 +1,7 @@
 from app.core.config import settings
+from app.database.registry import DATABASE_REGISTRY
 
 class DatabaseConfig:
-    
-    SUPPORTED_DATABASES = {
-        "mysql": "MySQL",
-    }
     
     def __init__(self):
         self.db_type = self._detect_database_type()
@@ -13,7 +10,7 @@ class DatabaseConfig:
     def _detect_database_type(self) -> str:
         db_type = settings.DB_TYPE
         
-        if db_type and db_type in self.SUPPORTED_DATABASES:
+        if db_type and db_type in DATABASE_REGISTRY:
             return db_type
         else:
             raise ValueError(f"Unsupported database type: {db_type}")
