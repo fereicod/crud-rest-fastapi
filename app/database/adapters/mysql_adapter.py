@@ -1,9 +1,6 @@
 from sqlmodel import create_engine, Session
 from app.database.base import DatabaseHandler
 from app.database.database_config import DatabaseConfig
-#import pymysql # 
-
-#pymysql.install_as_MySQLdb()
 
 class MySQLHandler(DatabaseHandler):
     
