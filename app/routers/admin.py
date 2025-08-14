@@ -3,6 +3,7 @@ from typing import Optional
 from app.utils.auth import create_access_token
 from app.schemas.api_admin import Token, AdminLogin, Admin, AdminCreate, AdminUpdate
 from app.middleware.auth_middleware import verify_token
+from app.services.services import get_admin_services
 
 router = APIRouter()
 
@@ -71,11 +72,12 @@ def login(admin: AdminLogin):
     return Token(access_token=access_token, token_type="bearer")
 
 @router.get("/all", response_model=list[Admin])
-def list_admins(_=Depends(verify_token)):
-    return [
-        {k: v for k, v in user.items() if k != "password"}
-        for user in db_users.values()
-    ]
+def list_admins(_=Depends(verify_token), admin_services=Depends(get_admin_services)):
+    return admin_services.get_all_admins()
+
+@router.get("/{username}", response_model=Admin)
+def get_admin(username: str, _=Depends(verify_token), admin_services=Depends(get_admin_services)):
+    return admin_services.get_admin_by_username(username)
 
 @router.post("/", response_model=Admin)
 def create_admin(admin: AdminCreate, _=Depends(verify_token)):
