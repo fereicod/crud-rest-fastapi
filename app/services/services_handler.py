@@ -1,14 +1,14 @@
-from sqlmodel import Session
-from fastapi import Depends
-from app.database.manager import get_session
 from app.services.base import BaseServiceHandler
+from app.repositories.admim_repository import AdminRepository
+from app.services.admin_services import AdminService
 
+class AdminServiceHandler(BaseServiceHandler):
 
-class AdminServiceHandler(BaseServiceHandler):    
-    def get_services(self):
+    def _setup_repositories(self) -> None:
+        self.admin_repo = AdminRepository(self.session)
+    
+    def _setup_services(self) -> None:
+        self.admin_service = AdminService(self.admin_repo)
+    
+    def get_services(self) -> AdminService:
         return self.admin_service
-
-
-def get_admin_services(session: Session = Depends(get_session)):
-    handler = AdminServiceHandler(session)
-    return handler.get_services()
