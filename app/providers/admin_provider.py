@@ -13,3 +13,19 @@ class AdminProvider:
     def get_all(self) -> list[Admin]:
         statement = select(Admin)
         return list(self.session.exec(statement))
+
+    def create(self, admin: Admin) -> Admin:
+        self.session.add(admin)
+        self.session.commit()
+        self.session.refresh(admin)
+        return admin
+    
+    def update(self, admin: Admin) -> Admin:
+        self.session.add(admin)
+        self.session.commit()
+        self.session.refresh(admin)
+        return admin
+
+    def delete(self, admin: Admin):
+        self.session.delete(admin)
+        self.session.commit()
