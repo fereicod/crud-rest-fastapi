@@ -67,6 +67,8 @@ Future improvements can include:
 - [Deep Dive into UV Dockerfiles: Image Size & Performance](https://medium.com/@benitomartin/deep-dive-into-uv-dockerfiles-by-astral-image-size-performance-best-practices-5790974b9579)
 - [Uvicorn Docker Deployment](https://www.uvicorn.org/deployment/docker/)
 - [FastAPI Security: OAuth2 JWT with Bearer Tokens](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/?h=bearer#hash-and-verify-the-passwords)
+- [SQLmodel](https://sqlmodel.tiangolo.com/)
+- [SQLAlchemy - Dialect](https://docs.sqlalchemy.org/en/20/dialects/index.html)
 
 ## MYSQL
 You can use the next file **init_catalog.sql**
