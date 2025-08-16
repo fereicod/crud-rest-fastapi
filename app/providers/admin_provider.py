@@ -5,9 +5,9 @@ from app.database.models import Admin
 class AdminProvider:
     def __init__(self, session: Session):
         self.session = session
-
-    def get_by_username(self, username: str) -> Optional[Admin]:
-        statement = select(Admin).where(Admin.username == username)
+    
+    def get_by_username_and_active(self, username: str) -> Optional[Admin]:
+        statement = select(Admin).where(Admin.username == username, Admin.is_active == True)
         return self.session.exec(statement).first()
     
     def get_all(self) -> list[Admin]:
@@ -27,5 +27,7 @@ class AdminProvider:
         return admin
 
     def delete(self, admin: Admin):
-        self.session.delete(admin)
+        admin.is_active = False
+        self.session.add(admin)
         self.session.commit()
+        self.session.refresh(admin)
