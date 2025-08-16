@@ -16,9 +16,11 @@ def _decode_token(token: str, admin_services: Optional[AdminService]) -> dict:
         payload: dict = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user = payload.get("sub")
         if admin_services and isinstance(user, str):
-            admin_services.get_admin_by_username(username=user)
-            return payload
-        raise HTTPException(status_code=401, detail="Invalid token by user")
+            try:
+                admin_services.get_admin_by_username_active(username=user)
+            except HTTPException:
+                raise HTTPException(status_code=401, detail="Admin not authorized")
+        return payload
     except InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
@@ -27,7 +29,6 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security), 
         raise HTTPException(status_code=401, detail="Token required")
     return _decode_token(credentials.credentials, admin_services)
 
-# Token opcional
 def verify_token_optional(
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security), 
 ) -> Optional[dict]:
