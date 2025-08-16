@@ -19,11 +19,11 @@ def list_admins(_=Depends(verify_token), admin_services=Depends(get_admin_servic
 
 @router.get("/{username}", response_model=Admin)
 def get_admin(username: str, _=Depends(verify_token), admin_services=Depends(get_admin_services)):
-    return admin_services.get_admin_by_username(username)
+    return admin_services.get_admin_by_username_active(username)
 
 @router.post("/", response_model=Admin)
 def create_admin(admin: AdminCreate, _=Depends(verify_token), admin_services=Depends(get_admin_services)):
-    return admin_services.create_admin(admin.username, admin.password, admin.email)
+    return admin_services.create_admin(admin)
 
 @router.put("/{username}", response_model=Admin)
 def update_admin(username: str, admin: AdminUpdate, _=Depends(verify_token), admin_services=Depends(get_admin_services)):
