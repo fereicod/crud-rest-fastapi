@@ -50,6 +50,24 @@ http://localhost:8000
 http://localhost:8000/docs
 ```
 
+## ▶️ Makefile Commands
+This project includes a `Makefile` to simplify common development tasks.
+
+- Usage:
+  - `make`: Shows a list of all available commands.
+
+- Dependencies
+  - `make install` : Install all requirements to run the service.
+
+- Testing
+  - `make test` : Runs the automated test suite.
+
+- Service Management
+  - `make run` : Starts all services (API and database) in detached mode.
+  - `make down` : Stops and removes the containers of the running services.
+  - `make clean` : Stops the services, and removes associated containers and volumes.
+
+
 ## API Usage
 - Anonymous Users: Retrieve product info (GET /product)
 - Admin Users: **CRUD** operations on products and admins
