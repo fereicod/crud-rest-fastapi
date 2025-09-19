@@ -35,17 +35,22 @@ git clone https://github.com/fereicod/crud-rest-fastapi.git
 cd crud-rest-fastapi
 ```
 
-2. Build and start the containers:
+2. Copy .env file and replace settings values:
+```bash
+cp .env-dev .env
+```
+
+3. Build and start the containers:
 ```bash
 docker-compose up --build
 ```
 
-3. The API will be available at:
+4. The API will be available at:
 ```bash
 http://localhost:8000
 ```
 
-4. API documentation can be accessed at:
+5. API documentation can be accessed at:
 ```bash
 http://localhost:8000/docs
 ```
