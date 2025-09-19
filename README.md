@@ -1,7 +1,7 @@
 # Product Catalog System
 
 ## Propose General Picture / System Design
-![](https://github.com/fereicod/backend-tech-zebrands/blob/main/system-design_v1.png)
+![](https://github.com/fereicod/crud-rest-fastapi/blob/main/system-design_v1.png)
 
 ## Description
 This is a basic catalog system to manage products. Each product has the following information:
@@ -31,8 +31,8 @@ To run the project using Docker:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/fereicod/backend-tech-zebrands.git
-cd backend-tech-zebrands
+git clone https://github.com/fereicod/crud-rest-fastapi.git
+cd crud-rest-fastapi
 ```
 
 2. Build and start the containers:
