@@ -35,7 +35,7 @@ git clone https://github.com/fereicod/crud-rest-fastapi.git
 cd crud-rest-fastapi
 ```
 
-2. Copy .env file and replace settings values:
+2. Copy `.env` file and replace settings values:
 ```bash
 cp .env-dev .env
 ```
